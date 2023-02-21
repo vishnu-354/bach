@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+{% extends "home.html" %}
+{% load static %}
+{% block content %}
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <nav id="navbar" class="navbar navbar-expand-lg fixed-top " aria-label="Main navigation" style="background-color: #2b2b4f;">
+        <div class="container">
+
+            <!-- Image Logo -->
+            <a class="navbar-brand logo-image" href="{% url 'home' %}"><b>B A C H</b></a>
+
+            <!-- Text Logo - Use this if you don't have a graphic logo -->
+            <!-- <a class="navbar-brand logo-text" href="index.html">Elma</a> -->
+
+            <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav ms-auto navbar-nav-scroll">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown012" data-bs-toggle="dropdown" aria-expanded="false">INSTRUMENTS</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                            {% for d in datas %}
+                            <li><a class="dropdown-item" href="{% url 'inst' itemcatg=d.instrument %}">{{d.instrument}}</a></li>
+                            <li><div class="dropdown-divider"></div></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">BEST DEALS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'loginc' %}">REGISTER</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        {% if request.session.name %}
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">{{request.session.name}}</a>
+                        {% endif %}
+                        <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                            <li><a class="dropdown-item" href="{% url 'customerd' %}">LOG OUT</a></li>
+                            <li><div class="dropdown-divider"></div></li>
+                            <li><a class="dropdown-item" href="{% url 'loginc' %}">SWITCH ACCOUNT</a></li>
+<!--                            <li><div class="dropdown-divider"></div></li>-->
+<!--                            <li><a class="dropdown-item" href="privacy.html">Privacy Policy</a></li>-->
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">CONTACT</a>
+                    </li>
+                    <li class="nav-item">
+                    </li>
+                </ul>
+                <span class="nav-item social-icons">
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-facebook-f fa-stack-1x"></i>
+                        </a>
+                    </span>
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-twitter fa-stack-1x"></i>
+                        </a>
+                    </span>
+                </span>
+            </div> <!-- end of navbar-collapse -->
+        </div> <!-- end of container -->
+    </nav> <!-- end of navbar -->
+     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+</head>
+<body>
+ <div class="basic-3 bg-gray" STYLE="padding-bottom: 5rem; padding-top: 5rem;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-xl-5">
+                    <div class="image-container" style="padding-top:8rem;">
+                        <center><img class="" src="{{data.image.url}}" alt="alternative" height="350px" width="350px"></center>
+                    </div> <!-- end of image-container -->
+                </div> <!-- end of col -->
+                <div class="col-lg-8 col-xl-7"  style="padding-top:0px;">
+                    <div class="text-container" >
+                        <h2>{{data.Product}}</h2>
+                        <p>{{data.Description}}</p>
+                        <h4>AVAILABLE:{{data.Quantity}}</h4>
+                        <h2>${{data.Price}}</h2>
+                        <div>
+                            <div>
+                            <form method="post" action="{% url 'delivery' dataid=data.id %}">
+                                    {% csrf_token %}
+                                <input type="hidden" name="Products" value="{{data.Product}}"><br>
+                                {% if request.session.name %}
+                            <input type="hidden" name="Name" style="width: 60%;" value="{{request.session.name}}"><br>
+                                 {% endif %}
+                                <label class="form-group" style="width: 30%;">Email       </label>
+                            <input type="email" name="Email" style="width: 60%;"><br>
+                            <label class="form-group" style="width: 30%;">Phone number</label>
+                            <input type="text" name="Ph_no" style="width: 60%;"><br>
+                            <label class="form-group" style="width: 30%;">Address</label>
+                            <input type="text" name="Address" style="width: 60%;"><br>
+
+
+						    <input type="hidden" id="price" value="{{data.Price}}">
+							<input type="hidden" id="userid" name="userid" value="{{request.session.name}}">
+						    <label style="width: 54%;">SELECT required quantity</label>
+							<input type="number" min="1" max="{{data.Quantity}}" name="qty" id="qty" value="0"><br><br>
+                            <label style="width: 30%;">TOTAL price</label>
+							<input type="text" name="totalprice" id="totalprice" value="{{data.Price}}"><br><br>
+					        <button class="btn-outline-lg page-scroll" style="width: 90%;" type="submit">BUY</button>
+                                </form>
+                            </div>
+					</div>
+                    </div> <!-- end of text-container -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+
+	$("#qty").change(function(){
+
+	quantity = document.getElementById("qty").value;
+
+	price = document.getElementById("price").value;
+	total = quantity * price;
+	document.getElementById("totalprice").value = total;
+
+	});
+
+	});
+</script>
+
+<div class="cards-2 bg-gray"  STYLE="padding-top: 5rem;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="h2-heading">MORE INSTRUMENTS</h2>
+                    <p class="p-heading">FROM THE BEST MANUFACTURERS</p>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+ <div class="row">
+                <div class="col-lg-12">
+{% for d in da %}
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-image">
+                            <img class="" src="{{d.image.url}}" alt="alternative" height="200px" width="200px" border="20px" border-color="black">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{d.Product}}</h5>
+                            <p class="card-text">{{d.instrument}}</p>
+                            <H4>${{d.Price}}</H4>
+                            <form method="post" action="{% url 'single' dataid=d.id %}" enctype="multipart/form-data">
+							{% csrf_token %}
+                            <button class="btn-solid-lg page-scroll"  type="submit">Go To Detais </button>
+                            </form>
+
+                        </div>
+                    </div>
+                    <!-- end of card -->
+                {% endfor %}
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of cards-2 -->
+</div>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  {% if messages %}
+  {% for message in messages %}
+
+  {% if message.tags == 'warning' %}
+    <script>
+    swal('{{message}}','','warning');
+    </script>
+  {% elif message.tags == 'error' %}
+    <script>
+    swal('{{message}}','invalid data','error');
+    </script>
+  {% else %}
+    <script>
+    swal('{{message}}','','success');
+    </script>
+   {%  endif %}
+  {% endfor %}
+  {% endif %}
+
+</body>
+</html>
+
+{% endblock %}

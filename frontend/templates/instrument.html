@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+{% extends "home.html" %}
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+     <nav id="navbar" class="navbar navbar-expand-lg fixed-top " aria-label="Main navigation" style="background-color: #2b2b4f;">
+        <div class="container">
+
+            <!-- Image Logo -->
+            <a class="navbar-brand logo-image" href="{% url 'home' %}"><b>B A C H</b></a>
+
+            <!-- Text Logo - Use this if you don't have a graphic logo -->
+            <!-- <a class="navbar-brand logo-text" href="index.html">Elma</a> -->
+
+            <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav ms-auto navbar-nav-scroll">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown012" data-bs-toggle="dropdown" aria-expanded="false">INSTRUMENTS</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                            {% for d in data %}
+                            <li><a class="dropdown-item" href="{% url 'inst' itemcatg=d.instrument %}">{{d.instrument}}</a></li>
+                            <li><div class="dropdown-divider"></div></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">BEST DEALS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'loginc' %}">REGISTER</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        {% if request.session.name %}
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">{{request.session.name}}</a>
+                        {% endif %}
+                        <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                            <li><a class="dropdown-item" href="{% url 'customerd' %}">LOG OUT</a></li>
+                            <li><div class="dropdown-divider"></div></li>
+                            <li><a class="dropdown-item" href="{% url 'loginc' %}">SWITCH ACCOUNT</a></li>
+<!--                            <li><div class="dropdown-divider"></div></li>-->
+<!--                            <li><a class="dropdown-item" href="privacy.html">Privacy Policy</a></li>-->
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">CONTACT</a>
+                    </li>
+                    <li class="nav-item">
+                    </li>
+                </ul>
+                <span class="nav-item social-icons">
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-facebook-f fa-stack-1x"></i>
+                        </a>
+                    </span>
+                    <span class="fa-stack">
+                        <a href="#your-link">
+                            <i class="fas fa-circle fa-stack-2x"></i>
+                            <i class="fab fa-twitter fa-stack-1x"></i>
+                        </a>
+                    </span>
+                </span>
+            </div> <!-- end of navbar-collapse -->
+        </div> <!-- end of container -->
+    </nav> <!-- end of navbar -->
+</head>
+<body>
+
+<div class="cards-2 bg-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="h2-heading">OUR INSTRUMENTS</h2>
+                    <p class="p-heading">FROM THE BEST MANUFACTURERS</p>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+
+            <div class="row">
+                <div class="col-lg-12">
+{% for product in products %}
+                    <!-- Card -->
+                    <div class="card">
+                        <div class="card-image">
+                            <img class="" src="{{product.image.url}}" alt="alternative" height="200px" width="200px" border="20px" border-color="black">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.instrument}}</h5>
+                            <p class="card-text">{{product.Product}}</p>
+                            <H4>${{product.Price}}</H4>
+                            <form method="post" action="{% url 'single' dataid=product.id %}" enctype="multipart/form-data">
+							{% csrf_token %}
+							<button class="btn-solid-lg page-scroll" type="submit">Go To Detais </button>
+							</form>
+                        </div>
+                    </div>
+                    <!-- end of card -->
+                {% endfor %}
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of cards-2 -->
+
+ <div id="services" class="counter">
+        <div class="container">
+             <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="h2-heading">TODAY'S  BEST DEALS</h2>
+                    <p class="p-heading">Here you will get some killer hot deals and super saver offers for Guitars,Keyboards and much MORE...</p>
+                </div> <!-- end of col -->
+            </div> <!-- end of row --><br><br>
+            <div class="row">
+    			<div class="col-md-6 col-lg-3 ftco-animate fadeInUp ftco-animated">
+    				<div class="product">
+    					<span>
+                            <img src="{% static 'images/1.jpg' %}" height="240px" width="240px" border="20px">
+                        </span>
+    					<div class="text py-3 pb-4 px-3 text-center">
+    						<H2>NEWYOUTH</H2>
+                            <span>
+                                <p>Kazoo Silver Aluminum Alloy Flute Diaphragm Mouth Instrument Kazoos</p>
+                            </span>
+    						<H2>-62% $229</H2>
+                            <form action="{% url 'deal' %}">
+                                <button class="btn-solid-reg" type="submit>">GRAB</button>
+                            </form>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-md-6 col-lg-3 ftco-animate fadeInUp ftco-animated">
+    				<div class="product">
+    					<span>
+                            <img src="{% static 'images/2.jpg' %}" height="240px" width="240px" border="20px">
+                        </span>
+    					<div class="text py-3 pb-4 px-3 text-center">
+    						<h2>DEER</h2>
+    						   <span>
+                                <p>Blue Deer Kalimba, Mbira Thumb Piano Kalimba Musical Instrument</p>
+                            </span>
+    						<H2>-55% $1,507</H2>
+                            <form action="{% url 'deal' %}">
+                                <button class="btn-solid-reg" type="submit>">GRAB</button>
+                            </form>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-md-6 col-lg-3 ftco-animate fadeInUp ftco-animated">
+    				<div class="product">
+    					<span>
+                            <img src="{% static 'images/3.jpg' %}" height="240px" width="240px" border="20px">
+                        </span>
+    					<div class="text py-3 pb-4 px-3 text-center">
+    						<h2>HOVNER 215</h2>
+                               <span>
+                                <p>Black F-Cut Rosewood Fretboard Acoustic Guitar With Bag</p>
+                            </span>
+    						<H2>-38% $4,480</H2>
+                            <form action="{% url 'deal' %}">
+                                <button class="btn-solid-reg" type="submit>">GRAB</button>
+                            </form>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-md-6 col-lg-3 ftco-animate fadeInUp ftco-animated">
+    				<div class="product">
+    					<span>
+                            <img src="{% static 'images/4.jpg' %}" height="240px" width="240px" border="20px">
+                        </span>
+    					<div class="text py-3 pb-4 px-3 text-center">
+    						<h2>XOZ</h2>
+                               <span>
+                                <p>9 Stopper 42 Key 2 Reed 440 Tuned Total Wood Musical Instrument Harmonium</p>
+                            </span>
+    						<H2>-45% $8,200</H2>
+                            <form action="{% url 'deal' %}">
+                                <button class="btn-solid-reg" type="submit>">GRAB</button>
+                            </form>
+    						</div>
+    					</div>
+    				</div>
+    			</div>
+
+
+
+    						</div>
+    </div>
+</body>
+
+</html>
+{% endblock %}
